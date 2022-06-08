@@ -225,7 +225,7 @@ func PayloadToPayloadHeader(p *ExecutionPayloadV1) (*ExecutionPayloadHeader, err
 		GasUsed:          p.GasUsed,
 		Timestamp:        p.Timestamp,
 		ExtraData:        ExtraData(p.ExtraData),
-		BaseFeePerGas:    [32]byte(common.BytesToHash(p.BaseFeePerGas.Bytes())),
+		BaseFeePerGas:    *new(U256Str).FromBig(p.BaseFeePerGas),
 		BlockHash:        [32]byte(p.BlockHash),
 		TransactionsRoot: [32]byte(txroot),
 	}, nil
