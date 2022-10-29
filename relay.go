@@ -217,8 +217,11 @@ func (r *RelayBackend) handleRegisterValidator(w http.ResponseWriter, req *http.
 		}
 		if prefs, ok := r.registrations[reg.Message.Pubkey]; ok {
 			if prefs.Timestamp <= reg.Message.Timestamp {
-				http.Error(w, errInvalidTimestamp.Error(), http.StatusBadRequest)
-				return
+				plog := r.log.WithFields(logrus.Fields{
+					"prefs.Timestamp":       prefs.Timestamp,
+					"reg.Message.Timestamp": reg.Message.Timestamp,
+				})
+				plog.Warn("Timestamp issue")
 			}
 		}
 		// Note, successful registrations are not reverted if an error
